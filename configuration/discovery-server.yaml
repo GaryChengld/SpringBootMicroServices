@@ -3,7 +3,9 @@ server:
 
 eureka:
   instance:
-    hostname: discovery-server
+    hostname: localhost
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 30
   client:
     registerWithEureka: true
     fetchRegistry: false
