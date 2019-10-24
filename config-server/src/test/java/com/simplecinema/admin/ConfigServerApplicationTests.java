@@ -1,10 +1,10 @@
-package com.simplecinema.discovery.simplecinemadiscoveryserver;
+package com.simplecinema.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SimpleCinemaDiscoveryServerApplicationTests {
+class ConfigServerApplicationTests {
 
 	@Test
 	void contextLoads() {
