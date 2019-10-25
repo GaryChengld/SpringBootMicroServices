@@ -1,9 +1,25 @@
 version: '3.7'
 services:
+  config-server:
+    build: config-server
+    image: "simple-cinema/config-server"
+    container_name: "config-server"
+    ports:
+      - "9999:9999"
+    environment:
+      TZ: Canada/Eastern
+
   discovery-server:
-    build: discovery-server
+    build:
+      context: discovery-server
+      dockerfile: ../docker/Dockerfile
+      args:
+        DOCKERIZE_VERSION: $DOCKERIZE_VERSION
     image: "simple-cinema/discovery-server"
-    container_name: "simple-cinema-discovery-server"
+    container_name: "discovery-server"
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:9999","-timeout=120s","--","java", "-jar", "app.jar", "--spring.profiles.active=docker"]
     ports:
       - "8761:8761"
     environment:

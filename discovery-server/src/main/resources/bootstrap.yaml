@@ -1,3 +1,12 @@
 spring:
+  cloud:
+    config:
+      uri: http://localhost:9999
   application:
     name: discovery-server
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://config-server:9999
