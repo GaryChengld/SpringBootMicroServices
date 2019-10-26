@@ -10,6 +10,8 @@ eureka:
 spring:
   profiles: docker
 eureka:
+  instance:
+    hostname: discovery-server
   client:
     serviceUrl:
       defaultZone: http://discovery-server:8761/eureka/
