@@ -24,3 +24,20 @@ services:
       - "8761:8761"
     environment:
       TZ: Canada/Eastern
+
+  admin-server:
+    build:
+      context: admin-server
+      dockerfile: ../docker/Dockerfile
+      args:
+        DOCKERIZE_VERSION: $DOCKERIZE_VERSION
+    image: "simple-cinema/admin-server"
+    container_name: "admin-server"
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "-jar", "app.jar", "--spring.profiles.active=docker"]
+    ports:
+      - "9090:9090"
+    environment:
+      TZ: Canada/Eastern
