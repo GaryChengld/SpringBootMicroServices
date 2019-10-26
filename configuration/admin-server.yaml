@@ -5,11 +5,11 @@ eureka:
     hostname: localhost
   client:
     serviceUrl:
-      defaultZone: http://local:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
 ---
 spring:
   profiles: docker
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://local:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
