@@ -1,6 +1,10 @@
 server:
   port: 8761
-
+info:
+  app:
+    name: discovery-server
+    description: Simple Cinema Discovery Server
+    version: 0.0.1-SNAPSHOT
 eureka:
   instance:
     hostname: localhost

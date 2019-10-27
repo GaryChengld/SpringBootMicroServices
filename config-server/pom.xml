@@ -10,7 +10,6 @@
     </parent>
     <groupId>com.simplecinema.config</groupId>
     <artifactId>simple-cinema-config-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>simple-cinema-config-server</name>
 
     <dependencies>

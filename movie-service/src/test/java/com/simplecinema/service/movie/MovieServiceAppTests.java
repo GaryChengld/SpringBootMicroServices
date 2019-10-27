@@ -1,10 +1,10 @@
-package com.simplecinema.admin;
+package com.simplecinema.service.movie;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigServerApplicationTests {
+class MovieServiceAppTests {
 
 	@Test
 	void contextLoads() {
