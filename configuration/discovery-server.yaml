@@ -3,7 +3,7 @@ server:
 info:
   app:
     name: discovery-server
-    description: Simple Cinema Discovery Server
+    description: Simple Cinema Application - Discovery Server
     version: 0.0.1-SNAPSHOT
 eureka:
   instance:

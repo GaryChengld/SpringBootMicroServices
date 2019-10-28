@@ -3,20 +3,11 @@ server:
 info:
   app:
     name: admin-server
-    description: Simple Cinema Admin Server
+    description: Simple Cinema Application - Admin Server
     version: 0.0.1-SNAPSHOT
-eureka:
-  instance:
-    hostname: localhost
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
 ---
 spring:
   profiles: docker
 eureka:
   instance:
     hostname: admin-server
-  client:
-    serviceUrl:
-      defaultZone: http://discovery-server:8761/eureka/
