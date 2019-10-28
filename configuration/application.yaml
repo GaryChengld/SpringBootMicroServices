@@ -1,0 +1,13 @@
+logging:
+  level:
+    org.springframework: WARN
+    com.netflix: WARN
+    io.netty: WARN
+    com.simplecinema: DEBUG
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure.include: "*"
