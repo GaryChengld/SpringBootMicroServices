@@ -5,6 +5,14 @@ info:
     name: movie-service
     description: Simple Cinema Application - Movie Service
     version: 0.0.1-SNAPSHOT
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://admin:z5LmwwU5HJziab3H@cluster0-lxf2u.mongodb.net/test?retryWrites=true&w=majority
+      database: simple-cinema
+      autoIndexCreation: true
+
 ---
 spring:
   profiles: docker
