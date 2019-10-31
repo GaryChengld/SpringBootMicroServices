@@ -32,6 +32,7 @@ public class MovieHandler {
     public RouterFunction<ServerResponse> getRouterFunction() {
         return nest(accept(APPLICATION_JSON),
                 route(GET("/{id}"), this::byId)
+                        .andRoute(GET("/imdbId/{imdbId}"), this::byImdbId)
                         .andRoute(POST("/"), this::create)
                         .andRoute(PUT("/{id}"), this::update)
         );
@@ -41,6 +42,14 @@ public class MovieHandler {
         String id = request.pathVariable("id");
         log.debug("find movie by id:{}", id);
         return this.movieRepository.findById(id)
+                .flatMap(this::buildResponse)
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
+    private Mono<ServerResponse> byImdbId(ServerRequest request) {
+        String imdbId = request.pathVariable("imdbId");
+        log.debug("find movie by imdbId:{}", imdbId);
+        return this.movieRepository.findByImdbId(imdbId)
                 .flatMap(this::buildResponse)
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
