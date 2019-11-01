@@ -7,13 +7,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
-import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
+import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -33,6 +37,7 @@ public class MovieHandler {
         return nest(accept(APPLICATION_JSON),
                 route(GET("/{id}"), this::byId)
                         .andRoute(GET("/imdbId/{imdbId}"), this::byImdbId)
+                        .andRoute(GET("/search/{keyword}"), this::search)
                         .andRoute(POST("/"), this::create)
                         .andRoute(PUT("/{id}"), this::update)
         );
@@ -54,16 +59,25 @@ public class MovieHandler {
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
+    private Mono<ServerResponse> search(ServerRequest request) {
+        String keyword = request.pathVariable("keyword");
+        log.debug("Received search movie request, keyword:{}", keyword);
+        Flux<Movie> movies = this.movieRepository.searchByKeyword(keyword);
+        return ServerResponse.ok()
+                .contentType(APPLICATION_JSON)
+                .body(movies, Movie.class);
+    }
+
     private Mono<ServerResponse> create(ServerRequest request) {
-        log.debug("Received create Movie request");
+        log.debug("Received create movie request");
         return request.bodyToMono(Movie.class)
                 .flatMap(this.movieRepository::save)
                 .flatMap(this::buildResponse);
     }
 
     private Mono<ServerResponse> update(ServerRequest request) {
-        log.debug("Received update blog request");
         String id = request.pathVariable("id");
+        log.debug("Received update movie request, id={}", id);
         AtomicReference<Movie> movieRef = new AtomicReference<>();
         return request.bodyToMono(Movie.class)
                 .doOnNext(movieRef::set)

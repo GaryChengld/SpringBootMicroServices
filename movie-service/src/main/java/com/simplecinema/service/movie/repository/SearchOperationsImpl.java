@@ -20,7 +20,7 @@ public class SearchOperationsImpl implements SearchOperations {
 
     @Override
     public Flux<Movie> searchByKeyword(String keyword) {
-        log.debug("Search blog by keyword:{}", keyword);
+        log.debug("Search Movie by keyword:{}", keyword);
         TextQuery query = new TextQuery(new TextCriteria().matchingAny(keyword).caseSensitive(false)).sortByScore();
         return template.find(query, Movie.class);
     }

@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: movie-service
+          uri: lb://movie-service
+          predicates:
+            - Path=/movies/**
+          filters:
+            - RewritePath=/movies, /api/v1/movies

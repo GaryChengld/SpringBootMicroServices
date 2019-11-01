@@ -9,7 +9,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,16 +25,16 @@ public class Movie {
     @Id
     public String id;
     @Indexed(unique = true)
-    @NotNull(message = "Imdb ID must not be null")
+    @NotBlank(message = "Imdb ID must not be blank")
     public String imdbId;
-    @TextIndexed
-    @NotNull(message = "Title must not be null")
+    @TextIndexed(weight = 10)
+    @NotBlank(message = "Title must not be blank")
     private String title;
-    @TextIndexed
+    @TextIndexed(weight = 1)
     private String overview;
     private Integer runningTime;
     private List<String> genres;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private List<String> imageUrls;
     @LastModifiedDate
     private Date updatedDate;
