@@ -1,0 +1,13 @@
+server:
+  port: 7979
+info:
+  app:
+    name: hystrix-dashboard
+    description: Simple Cinema Application - Hystrix Dashboard
+    version: 0.0.1-SNAPSHOT
+---
+spring:
+  profiles: docker
+eureka:
+  instance:
+    hostname: hystrix-dashboard
