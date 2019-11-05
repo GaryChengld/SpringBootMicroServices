@@ -22,6 +22,9 @@
     <module>config-server</module>
     <module>discovery-server</module>
     <module>admin-server</module>
+    <module>api-gateway</module>
+    <module>hystrix-dashboard</module>
+    <module>auth-server</module>
     <module>movie-service</module>
   </modules>
 
