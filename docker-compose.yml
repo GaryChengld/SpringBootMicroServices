@@ -41,3 +41,20 @@ services:
       - "9090:9090"
     environment:
       TZ: Canada/Eastern
+
+  api-gateway:
+    build:
+      context: api-gateway
+      dockerfile: ../docker/Dockerfile
+      args:
+        DOCKERIZE_VERSION: $DOCKERIZE_VERSION
+    image: "simple-cinema/api-gateway"
+    container_name: "api-gateway"
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "-jar", "app.jar", "--spring.profiles.active=docker"]
+    ports:
+      - "8000:8000"
+    environment:
+      TZ: Canada/Eastern
