@@ -58,3 +58,20 @@ services:
       - "8000:8000"
     environment:
       TZ: Canada/Eastern
+
+  hystrix-dashboard:
+    build:
+      context: hystrix-dashboard
+      dockerfile: ../docker/Dockerfile
+      args:
+        DOCKERIZE_VERSION: $DOCKERIZE_VERSION
+    image: "simple-cinema/hystrix-dashboard"
+    container_name: "hystrix-dashboard"
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "-jar", "app.jar", "--spring.profiles.active=docker"]
+    ports:
+      - "7979:7979"
+    environment:
+      TZ: Canada/Eastern
