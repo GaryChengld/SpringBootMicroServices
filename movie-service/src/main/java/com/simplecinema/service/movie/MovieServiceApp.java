@@ -18,7 +18,7 @@ public class MovieServiceApp {
         SpringApplication.run(MovieServiceApp.class, args);
     }
 
-    @Bean
+    //@Bean
     public RouterFunction<ServerResponse> routes(
             MovieHandler movieHandler) {
         return nest(path("/api/v1/movies"), movieHandler.getRouterFunction());
