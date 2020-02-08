@@ -1,15 +1,14 @@
 package com.simplecinema.service.movie.controller;
 
-import com.simplecinema.service.movie.vo.ApiResponse;
+import com.simplecinema.service.movie.domain.Movie;
 import com.simplecinema.service.movie.repository.MovieRepository;
+import com.simplecinema.service.movie.vo.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -27,19 +26,35 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<ApiResponse>> byId(@PathVariable("id") String id) {
+    public Mono<ResponseEntity<?>> byId(@PathVariable("id") String id) {
+        log.debug("find movie by id:{}", id);
         return movieRepository.findById(id)
-                .map(movie -> this.responseEntityByData(movie))
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .defaultIfEmpty(this.responseEntity(HttpStatus.NOT_FOUND, MSG_MOVIE_NOT_FOUND));
     }
 
-    private ResponseEntity<ApiResponse> responseEntityByData(Object data) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(data);
-        return ResponseEntity.ok(apiResponse);
+    @GetMapping("/imdbId/{imdbId}")
+    public Mono<ResponseEntity<?>> byImdbId(@PathVariable("imdbId") String imdbId) {
+        log.debug("find movie by imdbId:{}", imdbId);
+        return this.movieRepository.findByImdbId(imdbId)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .defaultIfEmpty(this.responseEntity(HttpStatus.NOT_FOUND, MSG_MOVIE_NOT_FOUND));
     }
 
-    private ResponseEntity<ApiResponse> responseEntity(HttpStatus httpStatus, String message) {
+    @GetMapping("/search/{keyword}")
+    @ResponseBody
+    public Flux<Movie> search(@PathVariable("keyword") String keyword) {
+        log.debug("Received search movie request, keyword:{}", keyword);
+        return this.movieRepository.searchByKeyword(keyword);
+    }
+
+    @PostMapping("/")
+    @ResponseBody
+    public Mono<Movie> add(@RequestBody Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    private ResponseEntity<?> responseEntity(HttpStatus httpStatus, String message) {
         return new ResponseEntity<>(new ApiResponse(httpStatus.value(), message), httpStatus);
     }
 }
