@@ -1,4 +1,4 @@
-package com.simplecinema.service.movie.vo;
+package com.simplecinema.service.movie.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

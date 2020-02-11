@@ -2,7 +2,7 @@ package com.simplecinema.service.movie.controller;
 
 import com.simplecinema.service.movie.domain.Movie;
 import com.simplecinema.service.movie.repository.MovieRepository;
-import com.simplecinema.service.movie.vo.ApiResponse;
+import com.simplecinema.service.movie.model.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,7 +51,26 @@ public class MovieController {
     @PostMapping("/")
     @ResponseBody
     public Mono<Movie> add(@RequestBody Movie movie) {
+        log.debug("Received add movie request, movie:{}", movie);
         return movieRepository.save(movie);
+    }
+
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<?>> update(@PathVariable("id") String id, @RequestBody Movie movie) {
+        log.debug("Update movie by id:{}", id);
+        return movieRepository.findById(id)
+                .map(m -> {
+                    m.setTitle(movie.getTitle());
+                    m.setOverview(movie.getOverview());
+                    m.setReleaseDate(movie.getReleaseDate());
+                    m.setRunningTime(movie.getRunningTime());
+                    m.setGenres(movie.getGenres());
+                    m.setImageUrls(movie.getImageUrls());
+                    return m;
+                })
+                .flatMap(this.movieRepository::save)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .defaultIfEmpty(this.responseEntity(HttpStatus.NOT_FOUND, MSG_MOVIE_NOT_FOUND));
     }
 
     private ResponseEntity<?> responseEntity(HttpStatus httpStatus, String message) {
