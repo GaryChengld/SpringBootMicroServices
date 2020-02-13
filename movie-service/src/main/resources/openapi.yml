@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Simple Movie APIs
+  description: REST APIs of simple movie service
+  version: 1.0.0
+  contact:
+    email: chengld@yahoo.com
+  license:
+    name: Apache 2.0
+
+tags:
+  - name: movie
+    description: Operations about movie
+
+paths:
+  '/movie/{id}':
+    get:
+      tags:
+        - movie
+      summary: Find movie by ID
+      description: Returns a single movie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Movie not found
+
+components:
+  schemas:
+    Movie:
+      type: object
+
