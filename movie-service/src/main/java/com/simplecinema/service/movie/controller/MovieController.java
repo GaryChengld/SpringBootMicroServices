@@ -1,6 +1,6 @@
 package com.simplecinema.service.movie.controller;
 
-import com.simplecinema.service.movie.domain.Movie;
+import com.simplecinema.service.movie.entity.Movie;
 import com.simplecinema.service.movie.repository.MovieRepository;
 import com.simplecinema.service.movie.model.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/api/v1/movies", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/movie", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MovieController {
     private static final String MSG_MOVIE_NOT_FOUND = "Movie not found";
     private final MovieRepository movieRepository;

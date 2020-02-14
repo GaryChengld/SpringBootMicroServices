@@ -1,12 +1,18 @@
 openapi: 3.0.0
 info:
-  title: Simple Movie APIs
+  title: Movie APIs
   description: REST APIs of simple movie service
-  version: 1.0.0
+  version: "1.0.0"
   contact:
     email: chengld@yahoo.com
   license:
     name: Apache 2.0
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/GaryCheng/movieAPI/1.0.0
+  - url: http://localhost:8081/api/v1
 
 tags:
   - name: movie
@@ -22,12 +28,13 @@ paths:
       parameters:
         - name: id
           in: path
+          description: ID of movie to return
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Operation successful
+          description: operation successful
           content:
             application/json:
               schema:
@@ -36,7 +43,32 @@ paths:
           description: Movie not found
 
 components:
+
   schemas:
     Movie:
       type: object
-
+      required:
+        - imdbId
+        - title
+      properties:
+        id:
+          type: string
+        imdbId:
+          type: string
+        overview:
+          type: string
+        runningTime:
+          type: integer
+          format: int32
+        genres:
+          type: array
+          items:
+            type: string
+        releaseDate:
+          type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        updatedDate:
+          type: string

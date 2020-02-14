@@ -1,4 +1,4 @@
-package com.simplecinema.service.movie.domain;
+package com.simplecinema.service.movie.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
