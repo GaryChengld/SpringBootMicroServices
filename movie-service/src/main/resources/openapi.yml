@@ -41,9 +41,99 @@ paths:
                 $ref: '#/components/schemas/Movie'
         '404':
           description: Movie not found
-
+    put:
+      tags:
+        - movie
+      summary: Update a movie
+      operationId: upateMovie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of movie that needs to be updated
+          schema:
+            type: string
+      responses:
+        '200':
+          description: operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '405':
+          description: Invalid input
+        '404':
+          description: Movie not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+  '/movie':
+    post:
+      tags:
+        - movie
+      summary: Create a movie
+      operationId: createMovie
+      responses:
+        '200':
+          description: operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '405':
+          description: Invalid input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+  '/movie/imdbId/{imdbId}':
+    get:
+      tags:
+        - movie
+      summary: Find movie by imdb id
+      operationId: findMovieByImdbId
+      parameters:
+        - name: imdbId
+          in: path
+          required: true
+          description: imdb ID of movie to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Movie not found
+  '/movie/search/{keyword}':
+    get:
+      tags:
+        - movie
+      summary: Search movie by keyword
+      operationId: searchMovie
+      parameters:
+        - name: keyword
+          in: path
+          required: true
+          description: keyword of movie
+          schema:
+            type: string
+      responses:
+        '200':
+          description: operation successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
 components:
-
   schemas:
     Movie:
       type: object
@@ -55,11 +145,12 @@ components:
           type: string
         imdbId:
           type: string
+        title:
+          type: string
         overview:
           type: string
         runningTime:
           type: integer
-          format: int32
         genres:
           type: array
           items:
